@@ -79,3 +79,23 @@ binding.spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSele
 }
 
 
+private fun updatePieChart() {
+    val transactions = viewModel.transactions.value ?: return
+    val categoryMap = transactions.groupBy { it.category }
+        .map { (category, list) -> PieEntry(list.sumOf { it.amount }.toFloat(), category) }
+
+    val dataSet = PieDataSet(categoryMap, "Expenses by Category")
+    dataSet.colors = listOf(Color.BLUE, Color.GREEN, Color.RED, Color.MAGENTA, Color.CYAN)
+    dataSet.valueTextSize = 12f
+
+    val data = PieData(dataSet)
+    binding.pieChart.data = data
+    binding.pieChart.invalidate()
+}
+
+// Call updatePieChart() whenever transactions change
+viewModel.transactions.observe(this, Observer { list ->
+    adapter.updateList(list)
+    binding.tvSummary.text = "Total: $${String.format("%.2f", viewModel.getTotalAmount())}"
+    updatePieChart()
+})
