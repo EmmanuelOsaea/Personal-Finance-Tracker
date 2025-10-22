@@ -50,3 +50,47 @@
     android:layout_height="200dp"
     android:layout_marginBottom="16dp"/>
         
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+    
+    <!-- LinearLayout inside as before -->
+</androidx.cardview.widget.CardView>
+
+
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/btnAddTransaction"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Add Transaction"
+    app:cornerRadius="12dp"
+    android:layout_marginTop="12dp"/>
+
+    val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+    override fun onMove(rv: RecyclerView, vh: RecyclerView.ViewHolder, t: RecyclerView.ViewHolder) = false
+    override fun onSwiped(vh: RecyclerView.ViewHolder, direction: Int) {
+        val transaction = adapter.transactions[vh.adapterPosition]
+        viewModel.removeTransaction(transaction)
+    }
+}
+ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.rvTransactions)
+
+fun getWeeklyTotal(): Double {
+    val now = Calendar.getInstance()
+    val startOfWeek = now.apply { set(Calendar.DAY_OF_WEEK, Calendar.MONDAY) }.timeInMillis
+    return transactions.value?.filter { it.date >= startOfWeek }?.sumOf { it.amount } ?: 0.0
+}
+
+fun getDailyTotal(): Double {
+    val today = Calendar.getInstance()
+    today.set(Calendar.HOUR_OF_DAY, 0)
+    today.set(Calendar.MINUTE, 0)
+    today.set(Calendar.SECOND, 0)
+    today.set(Calendar.MILLISECOND, 0)
+    val startOfDay = today.timeInMillis
+    return transactions.value?.filter { it.date >= startOfDay }?.sumOf { it.amount } ?: 0.0
+}
