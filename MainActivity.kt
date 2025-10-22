@@ -47,12 +47,8 @@ class MainActivity : AppCompatActivity() {
                 date = System.currentTimeMillis()
             )
             viewModel.addTransaction(transaction)
-        }
-    }
-}
 
-
-// Add a Spinner for categories in activity_main.xml above RecyclerView
+       // Add a Spinner for categories in activity_main.xml above RecyclerView
 <Spinner
     android:id="@+id/spinnerCategory"
     android:layout_width="match_parent"
@@ -78,3 +74,8 @@ binding.spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSele
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}
 }
+        }
+    }
+}
+
+
