@@ -1,4 +1,4 @@
-package com.example.financetracker.ui
+mypackage com.example.financetracker.ui
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
