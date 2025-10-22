@@ -10,8 +10,10 @@ import com.example.financetracker.data.Transaction
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TransactionAdapter(private val transactions: List<Transaction>) :
-    RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
+class TransactionAdapter(
+    private var transactions: List<Transaction>,
+    private val onDelete: (Transaction) -> Unit
+) : RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
     class TransactionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvTitle: TextView = view.findViewById(R.id.tvTitle)
@@ -31,10 +33,19 @@ class TransactionAdapter(private val transactions: List<Transaction>) :
         holder.tvTitle.text = transaction.title
         holder.tvAmount.text = "$${transaction.amount}"
         holder.tvCategory.text = transaction.category
-
         val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         holder.tvDate.text = sdf.format(Date(transaction.date))
+
+        holder.itemView.setOnLongClickListener {
+            onDelete(transaction)
+            true
+        }
     }
 
     override fun getItemCount(): Int = transactions.size
+
+    fun updateList(newList: List<Transaction>) {
+        transactions = newList
+        notifyDataSetChanged()
+    }
 }
