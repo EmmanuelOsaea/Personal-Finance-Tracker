@@ -50,3 +50,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+
+// Add a Spinner for categories in activity_main.xml above RecyclerView
+<Spinner
+    android:id="@+id/spinnerCategory"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp" />
+
+// In MainActivity.kt
+val categories = listOf("All", "Food", "Transport", "Entertainment", "Misc")
+val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+binding.spinnerCategory.adapter = spinnerAdapter
+
+binding.spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val selectedCategory = categories[position]
+        val filteredList = if (selectedCategory == "All") {
+            viewModel.transactions.value ?: listOf()
+        } else {
+            viewModel.transactions.value?.filter { it.category == selectedCategory } ?: listOf()
+        }
+        adapter.updateList(filteredList)
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
+}
