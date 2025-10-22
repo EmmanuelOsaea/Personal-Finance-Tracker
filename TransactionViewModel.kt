@@ -1,24 +1,47 @@
-mypackage com.example.financetracker.ui
+package com.example.financetracker.ui
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.example.financetracker.data.Transaction
 import com.example.financetracker.data.TransactionRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TransactionViewModel(context: Context) : ViewModel() {
     private val repository = TransactionRepository(context)
 
-    val transactions = liveData(Dispatchers.IO) {
-        emit(repository.getAll())
+    private val _transactions = MutableLiveData<List<Transaction>>(listOf())
+    val transactions: LiveData<List<Transaction>> get() = _transactions
+
+    init {
+        refreshTransactions()
     }
 
-    suspend fun addTransaction(transaction: Transaction) {
-        repository.insert(transaction)
+    fun refreshTransactions() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = repository.getAll()
+            _transactions.postValue(list)
+        }
     }
 
-    suspend fun removeTransaction(transaction: Transaction) {
-        repository.delete(transaction)
+    fun addTransaction(transaction: Transaction) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insert(transaction)
+            refreshTransactions()
+        }
+    }
+
+    fun removeTransaction(transaction: Transaction) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.delete(transaction)
+            refreshTransactions()
+        }
+    }
+
+    fun getTotalAmount(): Double {
+        return _transactions.value?.sumOf { it.amount } ?: 0.0
     }
 }
