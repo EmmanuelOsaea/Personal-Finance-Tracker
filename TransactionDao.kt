@@ -3,6 +3,7 @@ package com.example.financetracker.data.local
 import androidx.room.*
 import com.example.financetracker.data.Transaction
 import kotlinx.coroutines.flow.Flow
+import com.example.financetracker.model.Transaction
 
 @Dao
 interface TransactionDao {
