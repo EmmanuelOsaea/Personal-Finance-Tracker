@@ -1,17 +1,23 @@
-package com.example.financetracker.db
+package com.example.financetracker.data.local 
 
 import androidx.room.*
 import com.example.financetracker.data.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
+    @Query("SELECT * FROM transactions ORDER BY timestamp DESC")
+    fun getAllTransactionsFlow(): Flow<List<Transaction>>
 
-    @Query("SELECT * FROM transactions ORDER BY date DESC")
-    suspend fun getAllTransactions(): List<Transaction>
+    @Query("SELECT * FROM transactions WHERE category = :category ORDER BY timestamp DESC")
+    fun getByCategoryFlow(category: String): Flow<List<Transaction>>
 
-    @Insert
-    suspend fun insert(transaction: Transaction)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(tx: Transaction): Long
 
     @Delete
-    suspend fun delete(transaction: Transaction)
+    suspend fun delete(tx: Transaction)
+
+    @Query("DELETE FROM transactions")
+    suspend fun clearAll()
 }
