@@ -3,8 +3,14 @@ package com.example.financetracker.data
 import android.content.Context
 import androidx.room.Room
 import com.example.financetracker.db.AppDatabase
+import com.example.financetracker.data.local.Transaction
+import com.example.financetracker.data.local.TransactionDao
+import kotlinx.coroutines.flow.Flow
 
-class TransactionRepository(context: Context) {
+
+
+
+class TransactionRepository(context: Context private val dao: TransactionDao ) {
 
     private val db = Room.databaseBuilder(
         context,
