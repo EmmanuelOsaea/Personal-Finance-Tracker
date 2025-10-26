@@ -99,3 +99,10 @@ viewModel.transactions.observe(this, Observer { list ->
     binding.tvSummary.text = "Total: $${String.format("%.2f", viewModel.getTotalAmount())}"
     updatePieChart()
 })
+
+
+val categories = JsonUtils.loadCategories(this).map { it.name }.toMutableList()
+categories.add(0, "All") // Add 'All' at the top for filtering
+val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+binding.spinnerCategory.adapter = spinnerAdapter
