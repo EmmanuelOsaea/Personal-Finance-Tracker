@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.financetracker.R
 import com.example.financetracker.data.Transaction
 import java.text.SimpleDateFormat
 import java.util.*
+import com.example.financetracker.databinding.ItemTransactionBinding
 
 class TransactionAdapter(
     private var transactions: List<Transaction>,
