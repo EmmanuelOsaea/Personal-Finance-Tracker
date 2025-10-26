@@ -1,2 +1,15 @@
 
 ["All","Food","Transport","Entertainment","Misc"]
+
+{
+  "categories": [
+    { "name": "Food", "icon": "🍔" },
+    { "name": "Transport", "icon": "🚗" },
+    { "name": "Entertainment", "icon": "🎬" },
+    { "name": "Bills", "icon": "💡" },
+    { "name": "Shopping", "icon": "🛍️" },
+    { "name": "Health", "icon": "💊" },
+    { "name": "Savings", "icon": "💰" },
+    { "name": "Miscellaneous", "icon": "📦" }
+  ]
+}
