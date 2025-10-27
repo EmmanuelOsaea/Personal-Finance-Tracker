@@ -63,13 +63,14 @@
         android:layout_marginBottom="12dp"/>
 
  
-        
+        <Button
+    android:id="@+id/btnSummary"
+    android:text="View Summary"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp" />
     
-        
-        
-    
-        
-        <!-- RecyclerView for transactions -->
+             <!-- RecyclerView for transactions -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTransactions"
         android:layout_width="match_parent"
@@ -97,7 +98,10 @@
     android:backgroundTint="@color/purple_500"
     android:textColor="@android:color/white" />
 
-    </LinearLayout>
+    
+    
+        
+        </LinearLayout>
 
 <com.github.mikephil.charting.charts.PieChart
     android:id="@+id/pieChart"
