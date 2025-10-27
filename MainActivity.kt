@@ -16,7 +16,9 @@ import androidx.fragment.app.Fragment
 import com.example.financetracker.ui.HomeFragment
 import com.example.financetracker.ui.AddTransactionDialog
 import com.example.financetracker.ui.AnalyticsFragment
-
+import java.io.File
+import java.io.FileWriter
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,6 +51,21 @@ class MainActivity : AppCompatActivity() {
     startActivity(intent)
 }     
 
+   binding.btnExport.setOnClickListener {
+    CoroutineScope(Dispatchers.IO).launch {
+        val transactions = db.transactionDao().getAll()
+        val csvFile = File(getExternalFilesDir(null), "transactions.csv")
+        FileWriter(csvFile).use { writer ->
+            writer.append("Date,Category,Amount,Description\n")
+            transactions.forEach {
+                writer.append("${it.date},${it.category},${it.amount},${it.description}\n")
+            }
+        }
+        withContext(Dispatchers.Main) {
+            Toast.makeText(this@MainActivity, "Exported to ${csvFile.absolutePath}", Toast.LENGTH_LONG).show()
+        }
+    }
+}
 
 <Button
     android:id="@+id/btnExport"
