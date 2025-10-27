@@ -45,3 +45,23 @@ class TransactionViewModel(context: Context) : ViewModel() {
         return _transactions.value?.sumOf { it.amount } ?: 0.0
     }
 }
+
+
+class TransactionViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val dao = AppDatabase.getDatabase(application).transactionDao()
+
+    val allTransactions: LiveData<List<TransactionEntity>> = dao.getAllTransactions()
+
+    fun addTransaction(transaction: TransactionEntity) = viewModelScope.launch {
+        dao.insert(transaction)
+    }
+
+    fun deleteTransaction(transaction: TransactionEntity) = viewModelScope.launch {
+        dao.delete(transaction)
+    }
+
+    fun clearTransactions() = viewModelScope.launch {
+        dao.clearAll()
+    }
+}
