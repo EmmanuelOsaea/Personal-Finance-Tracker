@@ -42,7 +42,25 @@ class MainActivity : AppCompatActivity() {
     startActivity(intent)
 }
         
-        // Observe transactions
+        
+         <!-- Search Bar -->
+    <SearchView
+        android:id="@+id/searchView"
+        android:queryHint="Search by title or category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!-- Filter by Date -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="8dp">
+
+        
+        
+         // Observe transactions
         viewModel.transactions.observe(this, Observer { list ->
             adapter.updateList(list)
             binding.tvSummary.text = "Total: $${String.format("%.2f", viewModel.getTotalAmount())}"
