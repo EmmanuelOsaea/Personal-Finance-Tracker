@@ -1,5 +1,6 @@
 package com.example.financetracker
 
+import androidx.appcompat.app.AppCompatDelegate
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -47,6 +48,23 @@ class MainActivity : AppCompatActivity() {
     val intent = Intent(this, SummaryActivity::class.java)
     startActivity(intent)
 }     
+
+
+<Button
+    android:id="@+id/btnExport"
+    android:text="Export CSV"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp" />
+
+   
+   binding.switchTheme.setOnCheckedChangeListener { _, isChecked ->
+    if (isChecked) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    } else {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    }
+}
          <!-- Search Bar -->
     <SearchView
         android:id="@+id/searchView"
