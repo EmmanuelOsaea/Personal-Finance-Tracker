@@ -1,0 +1,3 @@
+binding.btnBack.setOnClickListener {
+    finish()
+}
