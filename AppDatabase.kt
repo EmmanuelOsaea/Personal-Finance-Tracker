@@ -1,9 +1,10 @@
 package com.example.financetracker.data
 
+import androidx.room.Room
 import androidx.room.Database
-import androidx.room.RoomDatabase
 import com.example.financetracker.data.Transaction
 import android.content.Context
+import androidx.room.RoomDatabase
 
 @Database(entities = [Transaction::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
