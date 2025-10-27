@@ -1,4 +1,4 @@
-package com.example.financetracker.db
+package com.example.financetracker.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
