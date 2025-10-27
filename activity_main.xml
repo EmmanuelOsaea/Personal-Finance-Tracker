@@ -70,7 +70,19 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp" />
     
-             <!-- RecyclerView for transactions -->
+     <Switch
+    android:id="@+id/switchTheme"
+    android:text="Dark Mode"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp" />      
+
+
+        
+
+
+        
+          <!-- RecyclerView for transactions -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTransactions"
         android:layout_width="match_parent"
