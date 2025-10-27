@@ -37,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         binding.rvTransactions.layoutManager = LinearLayoutManager(this)
         binding.rvTransactions.adapter = adapter
 
+       binding.btnAnalytics.setOnClickListener {
+    val intent = Intent(this, AnalyticsActivity::class.java)
+    startActivity(intent)
+}
+        
         // Observe transactions
         viewModel.transactions.observe(this, Observer { list ->
             adapter.updateList(list)
