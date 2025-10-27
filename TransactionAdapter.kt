@@ -36,12 +36,20 @@ class TransactionAdapter(
         val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         holder.tvDate.text = sdf.format(Date(transaction.date))
 
-        holder.itemView.setOnLongClickListener {
+        holder.itemView.setOnClickListener {
             onDelete(transaction)
             true
         }
     }
 
+holder.itemView.setOnClickListener {
+    val intent = Intent(context, TransactionDetailActivity::class.java)
+    intent.putExtra("TRANSACTION_ID", transaction.id)
+    context.startActivity(intent)
+}
+   
+    
+    
     override fun getItemCount(): Int = transactions.size
 
     fun updateList(newList: List<Transaction>) {
