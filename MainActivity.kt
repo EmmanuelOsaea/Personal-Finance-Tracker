@@ -144,3 +144,17 @@ categories.add(0, "All") // Add 'All' at the top for filtering
 val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
 spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 binding.spinnerCategory.adapter = spinnerAdapter
+
+startActivity(intent)
+overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+binding.btnAnalytics.setOnClickListener {
+    val intent = Intent(this, AnalyticsActivity::class.java)
+    startActivity(intent)
+    overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+}
+
+binding.btnBack.setOnClickListener {
+    finish()
+    overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+}
+
