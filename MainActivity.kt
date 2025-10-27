@@ -11,6 +11,11 @@ import com.example.financetracker.ui.components.TransactionAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.fragment.app.Fragment
+import com.example.financetracker.ui.HomeFragment
+import com.example.financetracker.ui.AddTransactionDialog
+import com.example.financetracker.ui.AnalyticsFragment
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -99,6 +104,34 @@ viewModel.transactions.observe(this, Observer { list ->
     binding.tvSummary.text = "Total: $${String.format("%.2f", viewModel.getTotalAmount())}"
     updatePieChart()
 })
+
+      // Default fragment
+        openFragment(HomeFragment())
+
+        binding.bottomNavigation.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_home -> openFragment(HomeFragment())
+                R.id.nav_analytics -> openFragment(AnalyticsFragment())
+                R.id.nav_add -> {
+                    val dialog = AddTransactionDialog()
+                    dialog.show(supportFragmentManager, "AddTransactionDialog")
+                }
+            }
+            true
+        }
+    }
+
+    private fun openFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+    }
+}
+
+
+
+
+
 
 
 val categories = JsonUtils.loadCategories(this).map { it.name }.toMutableList()
