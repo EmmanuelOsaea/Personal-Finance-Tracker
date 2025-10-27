@@ -29,3 +29,10 @@ interface TransactionDao {
     @Query("DELETE FROM transactions")
     suspend fun clearAll()
 }
+
+
+@Query("SELECT * FROM transactions WHERE title LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' ORDER BY date DESC")
+fun searchTransactions(query: String): LiveData<List<TransactionEntity>>
+
+@Query("SELECT * FROM transactions WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
+fun filterByDate(startDate: String, endDate: String): LiveData<List<TransactionEntity>>
