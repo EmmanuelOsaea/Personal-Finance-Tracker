@@ -42,7 +42,11 @@ class MainActivity : AppCompatActivity() {
     startActivity(intent)
 }
         
-        
+
+   binding.btnSummary.setOnClickListener {
+    val intent = Intent(this, SummaryActivity::class.java)
+    startActivity(intent)
+}     
          <!-- Search Bar -->
     <SearchView
         android:id="@+id/searchView"
