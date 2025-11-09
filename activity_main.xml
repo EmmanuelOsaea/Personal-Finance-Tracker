@@ -165,3 +165,12 @@ fun getDailyTotal(): Double {
     val startOfDay = today.timeInMillis
     return transactions.value?.filter { it.date >= startOfDay }?.sumOf { it.amount } ?: 0.0
 }
+
+
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/transactionsRecyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    tools:listitem="@layout/item_transaction"/>      
