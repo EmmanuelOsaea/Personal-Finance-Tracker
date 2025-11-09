@@ -66,3 +66,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+
+
+private fun updateSummary(transactions: List<Transaction>) {
+    val totalIncome = transactions.filter { it.type == "Income" }.sumOf { it.amount }
+    val totalExpense = transactions.filter { it.type == "Expense" }.sumOf { it.amount }
+    val balance = totalIncome - totalExpense
+
+    binding.totalIncome.text = "Total Income: ₦$totalIncome"
+    binding.totalExpense.text = "Total Expense: ₦$totalExpense"
+    binding.balance.text = "Balance: ₦$balance"
+}
