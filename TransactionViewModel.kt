@@ -1,67 +1,30 @@
-package com.example.financetracker.ui
+package com.example.financetracker.viewmodel
 
-import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.financetracker.data.Transaction
-import com.example.financetracker.data.TransactionRepository
-import kotlinx.coroutines.Dispatchers
+import android.app.Application
+import androidx.lifecycle.*
+import com.example.financetracker.data.*
 import kotlinx.coroutines.launch
-
-class TransactionViewModel(context: Context) : ViewModel() {
-    private val repository = TransactionRepository(context)
-
-    private val _transactions = MutableLiveData<List<Transaction>>(listOf())
-    val transactions: LiveData<List<Transaction>> get() = _transactions
-
-    init {
-        refreshTransactions()
-    }
-
-    fun refreshTransactions() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val list = repository.getAll()
-            _transactions.postValue(list)
-        }
-    }
-
-    fun addTransaction(transaction: Transaction) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.insert(transaction)
-            refreshTransactions()
-        }
-    }
-
-    fun removeTransaction(transaction: Transaction) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.delete(transaction)
-            refreshTransactions()
-        }
-    }
-
-    fun getTotalAmount(): Double {
-        return _transactions.value?.sumOf { it.amount } ?: 0.0
-    }
-}
-
 
 class TransactionViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val dao = AppDatabase.getDatabase(application).transactionDao()
+    private val repository: TransactionRepository
+    val allTransactions: LiveData<List<Transaction>>
+    val totalIncome: LiveData<Double?>
+    val totalExpense: LiveData<Double?>
 
-    val allTransactions: LiveData<List<TransactionEntity>> = dao.getAllTransactions()
-
-    fun addTransaction(transaction: TransactionEntity) = viewModelScope.launch {
-        dao.insert(transaction)
+    init {
+        val dao = AppDatabase.getDatabase(application).transactionDao()
+        repository = TransactionRepository(dao)
+        allTransactions = repository.allTransactions
+        totalIncome = repository.totalIncome
+        totalExpense = repository.totalExpense
     }
 
-    fun deleteTransaction(transaction: TransactionEntity) = viewModelScope.launch {
-        dao.delete(transaction)
+    fun insert(transaction: Transaction) = viewModelScope.launch {
+        repository.insert(transaction)
     }
 
-    fun clearTransactions() = viewModelScope.launch {
-        dao.clearAll()
+    fun delete(transaction: Transaction) = viewModelScope.launch {
+        repository.delete(transaction)
     }
 }
