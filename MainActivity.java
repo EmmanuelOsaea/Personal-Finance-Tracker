@@ -24,3 +24,29 @@ dbRef.addValueEventListener(new ValueEventListener() {
         Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
     }
 });
+
+
+
+RecyclerView recyclerView = findViewById(R.id.transactionsRecyclerView);
+List<Transaction> transactionList = new ArrayList<>();
+TransactionAdapter adapter = new TransactionAdapter(transactionList);
+recyclerView.setAdapter(adapter);
+recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("transactions");
+dbRef.addValueEventListener(new ValueEventListener() {
+    @Override
+    public void onDataChange(@NonNull DataSnapshot snapshot) {
+        transactionList.clear();
+        for (DataSnapshot data : snapshot.getChildren()) {
+            Transaction t = data.getValue(Transaction.class);
+            if (t != null) transactionList.add(t);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError error) {
+        Toast.makeText(MainActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+    }
+});
