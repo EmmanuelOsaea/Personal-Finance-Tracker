@@ -1,1 +1,4 @@
-
+<string-array name="transaction_types">
+    <item>Income</item>
+    <item>Expense</item>
+</string-array>
