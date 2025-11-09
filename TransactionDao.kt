@@ -1,38 +1,23 @@
-package com.example.financetracker.data.local 
+package com.example.financetracker.data
 
-import androidx.room.*
-import com.example.financetracker.data.Transaction
-import kotlinx.coroutines.flow.Flow
-import com.example.financetracker.model.Transaction
 import androidx.lifecycle.LiveData
+import androidx.room.*
 
 @Dao
 interface TransactionDao {
-    @Query("SELECT * FROM transactions ORDER BY timestamp DESC")
-    fun getAllTransactionsFlow(): Flow<List<Transaction>>
-
-    @Query("SELECT * FROM transactions WHERE category = :category ORDER BY timestamp DESC")
-    fun getByCategoryFlow(category: String): Flow<List<Transaction>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(tx: Transaction): Long
+    suspend fun insert(transaction: Transaction)
 
-    @Update
-    fun update(transaction: Transaction)
-  
-    
-    
     @Delete
-   
-    suspend fun delete(tx: Transaction)
+    suspend fun delete(transaction: Transaction)
 
-    @Query("DELETE FROM transactions")
-    suspend fun clearAll()
+    @Query("SELECT * FROM transactions ORDER BY timestamp DESC")
+    fun getAllTransactions(): LiveData<List<Transaction>>
+
+    @Query("SELECT SUM(amount) FROM transactions WHERE type = 'income'")
+    fun getTotalIncome(): LiveData<Double?>
+
+    @Query("SELECT SUM(amount) FROM transactions WHERE type = 'expense'")
+    fun getTotalExpense(): LiveData<Double?>
 }
-
-
-@Query("SELECT * FROM transactions WHERE title LIKE '%' || :query || '%' OR category LIKE '%' || :query || '%' ORDER BY date DESC")
-fun searchTransactions(query: String): LiveData<List<TransactionEntity>>
-
-@Query("SELECT * FROM transactions WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
-fun filterByDate(startDate: String, endDate: String): LiveData<List<TransactionEntity>>
